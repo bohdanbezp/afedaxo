@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="330dp"
+                android:layout_height="187dp" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView android:layout_width="330dp" android:layout_height="207dp"
+    android:src="@drawable/screen_6_copy"
+    />
+
+    <TextView
+            android:id="@+id/dialog_dishdtc_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="33dp"
+            android:textColor="#484848"
+            android:includeFontPadding="false"
+            app:fontFamily="@font/my_custom_font"
+            android:text="@string/dish_detected"
+    />
+
+    <TextView
+            android:id="@+id/dialog_dishdtc_val"
+            android:layout_below="@id/dialog_dishdtc_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="17.3sp"
+            app:fontFamily="@font/my_custom_font"
+            android:layout_marginLeft="45dp"
+            android:includeFontPadding="false"
+            android:layout_marginRight="45dp"
+            android:textColor="#454545"
+            tools:text="Please conform dish price is detected : 5.00"
+    />
+
+    <Button
+            android:id="@+id/dialog_dishdtc_selectag_btn"
+            android:layout_below="@id/dialog_dishdtc_val"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="45dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#00a131"
+            android:includeFontPadding="false"
+            app:fontFamily="@font/my_custom_font"
+            android:text="@string/select_again"
+    />
+    <Button
+            android:layout_toRightOf="@id/dialog_dishdtc_selectag_btn"
+            android:layout_marginLeft="25dp"
+            android:id="@+id/dialog_dishdtc_confirm_btn"
+            android:layout_below="@id/dialog_dishdtc_val"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:includeFontPadding="false"
+            app:fontFamily="@font/my_custom_font"
+            android:textColor="#00a131"
+            android:text="@string/confirm"
+    />
+</RelativeLayout>

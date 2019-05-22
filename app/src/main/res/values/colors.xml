@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00ff4e</color>
+    <color name="colorPrimaryDark">#5a9216</color>
+    <color name="colorPrimaryLight">#bef67a</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="tutorialColor1">#f0f4c3</color>
+    <color name="tutorialColor2">#c8e6c9</color>
+    <color name="tutorialColor3">#dcedc8</color>
+
+    <color name="tutorialColor1Bottom">#99aa00</color>
+    <color name="tutorialColor2Bottom">#c8e6c9</color>
+    <color name="tutorialColor3Bottom">#dcedc8</color>
+
+    <color name="background">#FFFFFF</color>
+</resources>

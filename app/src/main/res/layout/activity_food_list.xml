@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".ui.activity.FoodListActivity">
+
+    <include android:id="@+id/afdx_toolbar"
+    layout="@layout/afedaxo_toolbar"/>
+    
+    <ImageView android:layout_width="wrap_content"
+               android:src="@drawable/design_3"
+               android:layout_alignParentBottom="true"
+               android:scaleType="fitStart"
+               android:adjustViewBounds="true"
+               android:layout_height="140dp"/>
+
+    <com.mlsdev.animatedrv.AnimatedRecyclerView
+            android:id="@+id/ac_fl_recyclerview"
+            android:layout_below="@id/afdx_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            app:animationDuration="600"
+            app:layoutAnimation="@anim/layout_animation_from_bottom"
+            app:layoutManagerOrientation="vertical"
+            app:layoutManagerReverse="false"
+            app:layoutManagerType="linear"
+    />
+
+
+    <com.google.android.material.button.MaterialButton
+            android:layout_margin="16dp"
+            style="@style/Button.Primary"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/ac_fl_process_btn"
+            android:visibility="invisible"
+            android:layout_centerHorizontal="true"
+            android:text="@string/get_food_recommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ac_fl_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_above="@id/ac_fl_process_btn"
+            app:borderWidth="0dp"
+            app:backgroundTint="#5a5a5a"
+            android:layout_marginRight="16dp"
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:tint="@android:color/white"/>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/ac_fl_empty_view"
+              android:textSize="16sp"
+              android:visibility="invisible"
+              app:fontFamily="@font/my_custom_font"
+              android:text="@string/please_add_at_least_2_dishes"
+              android:layout_centerHorizontal="true"
+              android:layout_centerVertical="true"
+    />
+
+</RelativeLayout>
