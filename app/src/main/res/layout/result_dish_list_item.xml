@@ -23,13 +23,14 @@
             />
 
             <TextView
-                    android:layout_alignParentBottom="true"
+                    android:layout_below="@id/dish_item_image"
                     android:id="@+id/dish_item_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#5a5a5a"
                     android:padding="8dp"
                     app:fontFamily="@font/my_custom_font"
+                    android:includeFontPadding="false"
                     android:gravity="center"
                     android:textSize="15sp"
                     android:textColor="#ffffff"

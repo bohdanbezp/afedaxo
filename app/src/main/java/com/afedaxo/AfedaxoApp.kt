@@ -1,22 +1,20 @@
 package com.afedaxo
 
 import android.app.Application
-import com.afedaxo.di.AppComponent
-import com.afedaxo.di.AppModule
-import com.afedaxo.di.DaggerAppComponent
+import com.afedaxo.di.mvvmModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class AfedaxoApp : Application() {
-
-    companion object {
-        lateinit var component: AppComponent
-    }
 
     override fun onCreate() {
         super.onCreate()
 
-        component = DaggerAppComponent
-            .builder()
-            .appModule(AppModule(this))
-            .build()
+        startKoin {
+            // declare used Android context
+            androidContext(this@AfedaxoApp)
+            // declare modules
+            modules(mvvmModule)
+        }
     }
 }

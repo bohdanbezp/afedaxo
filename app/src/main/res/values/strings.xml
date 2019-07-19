@@ -24,10 +24,13 @@
     <string name="does_price_matter">Does price matter?</string>
     <string name="proceed">Proceed</string>
     <string name="result">Result:</string>
-    <string name="reuse_previos_photo">Reuse Previos Photo</string>
+    <string name="reuse_previos_photo">Reuse Previous Photo</string>
     <string name="welcome_to">WELCOME TO</string>
     <string name="afedaxo">AFEDAXO</string>
     <string name="retake_photo">Retake Photo</string>
     <string name="dish_detected">Dish Detected</string>
     <string name="please_add_at_least_2_dishes">Please take a photo of a menu and select at least 2 dishes with their prices visible</string>
+    <string name="recommended_dishes_for_each_person">Recommended dishes for each person:</string>
+    <string name="select_with_price">Dish is not detected! Please select dish with price</string>
+    <string name="start_new_reocommendation_session">New session</string>
 </resources>

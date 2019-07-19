@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -21,7 +23,7 @@ class FilesRepository (val context: Context) {
         return BitmapFactory.decodeFile(file.absolutePath, options)
     }
 
-    fun saveBitmapToFile(bitmap: Bitmap): String {
+    suspend fun saveBitmapToFile(bitmap: Bitmap): String = withContext(Dispatchers.IO){
         val filename = generateFilename()
         val saveFile = getOutputJPEGFile(filename)
         val fileOutputStream = FileOutputStream(saveFile);
@@ -29,7 +31,7 @@ class FilesRepository (val context: Context) {
             fileOutputStream)
         fileOutputStream.flush()
         fileOutputStream.close()
-        return filename
+        filename
     }
 
     /** Create a File for saving an image or video  */
@@ -78,7 +80,7 @@ class FilesRepository (val context: Context) {
         return generated
     }
 
-    fun deleteIfExists(fullFilename: String?) {
+    suspend fun deleteIfExists(fullFilename: String?) = withContext(Dispatchers.IO){
         val file = getOutputJPEGFile(fullFilename)
         if (file.exists()) {
             file.delete()

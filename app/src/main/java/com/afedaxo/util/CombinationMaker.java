@@ -1,7 +1,6 @@
 package com.afedaxo.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CombinationMaker<T> {

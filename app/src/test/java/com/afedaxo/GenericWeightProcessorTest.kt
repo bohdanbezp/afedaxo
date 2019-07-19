@@ -1,9 +1,8 @@
 package com.afedaxo
 
-import com.afedaxo.model.room.Dish
+import com.afedaxo.model.room.DishEntity
 import com.afedaxo.processor.CompositeWeightProcessor
 import com.afedaxo.processor.DishWeightProcessor
-import com.afedaxo.processor.GenericWeightProcessor
 import org.junit.Test
 import java.util.*
 
@@ -14,13 +13,13 @@ class GenericWeightProcessorTest {
         var d1: Int = 0
         var d2: Int = 0
         var d3: Int = 0
-        val dish1 = Dish(Math.abs(Random().nextInt()),
+        val dish1 = DishEntity(Math.abs(Random().nextInt()),
             "", "5.50", "", 0,
             System.currentTimeMillis())
-        val dish2 = Dish(Math.abs(Random().nextInt()),
+        val dish2 = DishEntity(Math.abs(Random().nextInt()),
             "", "7.50", "", 0,
             System.currentTimeMillis())
-        val dish3 = Dish(Math.abs(Random().nextInt()),
+        val dish3 = DishEntity(Math.abs(Random().nextInt()),
             "", "8.00", "", 0,
             System.currentTimeMillis())
         val inptList = listOf(dish1, dish2, dish3)

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="com.afedaxo.presentation.ui.photo.PhotoTakingViewModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:keepScreenOn="true"
+            android:layout_height="match_parent"
+            tools:context=".ui.activity.PhotoTakingActivity">
+
+        <net.bohush.geometricprogressview.GeometricProgressView
+                android:id="@+id/progressView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:paddingBottom="50dp"
+                app:gp_type="triangle"
+                app:gp_number_of_angles="7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:gp_color="@color/colorPrimary"
+                app:gp_duration="800"
+                android:visibility="@{viewModel.progressBarVisibility, default=gone}"
+                app:gp_figure_padding="3dp"/>
+
+
+        <com.google.android.material.button.MaterialButton
+                style="@style/Button.Primary"
+                android:id="@+id/ac_pt_snap_btn"
+                android:layout_width="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/take_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content"/>
+
+        <io.fotoapparat.view.CameraView
+                android:id="@+id/ac_pt_camera_view"
+                android:layout_width="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="@{viewModel.photoOverlayVisibility, default=visible}"
+                android:layout_height="wrap_content" app:layout_constraintHorizontal_bias="0.0"/>
+
+        <com.google.android.material.button.MaterialButton
+                app:layout_constraintTop_toBottomOf="@id/afdx_toolbar"
+                style="@style/Button.Primary"
+                android:id="@+id/ac_pt_reuse_previes_btn"
+                android:layout_width="wrap_content"
+                android:text="@string/reuse_previos_photo"
+                android:layout_margin="8dp"
+                android:onClick="@{() -> viewModel.onReuseBtnClick()}"
+                android:visibility="@{viewModel.reuseBtnVisibility, default=invisible}"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="wrap_content"/>
+
+
+        <include android:id="@+id/afdx_toolbar"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 layout="@layout/afedaxo_toolbar"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

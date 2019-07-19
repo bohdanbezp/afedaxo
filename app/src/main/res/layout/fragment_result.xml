@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="viewModel" type="com.afedaxo.presentation.ui.result.ResultViewModel"/>
+    </data>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.activity.ResultActivity">
+        <include android:id="@+id/afdx_toolbar"
+                 layout="@layout/afedaxo_toolbar"/>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_below="@id/afdx_toolbar"
+                  android:id="@+id/ac_fl_empty_view"
+                  android:textSize="18sp"
+                  android:layout_marginTop="16dp"
+                  android:layout_marginLeft="20dp"
+                  android:layout_marginRight="20dp"
+                  app:fontFamily="@font/my_custom_font"
+                  android:text="@string/recommended_dishes_for_each_person"
+                  android:layout_centerHorizontal="true"
+                  android:layout_centerVertical="true"
+        />
+
+        <com.mlsdev.animatedrv.AnimatedRecyclerView
+                android:id="@+id/ac_res_recyclerview"
+                android:layout_below="@id/ac_fl_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:animationDuration="600"
+                app:layoutAnimation="@anim/layout_animation_from_bottom"
+                app:layoutManagerOrientation="vertical"
+                app:layoutManagerReverse="false"
+                app:layoutManagerType="linear"
+        />
+
+        <com.google.android.material.button.MaterialButton
+                style="@style/Button.Primary"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:id="@+id/ac_res_new"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="55dp"
+                android:layout_marginBottom="35dp"
+                android:layout_centerHorizontal="true"
+                android:onClick="@{() -> viewModel.onNewSession()}"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="@string/start_new_reocommendation_session"
+        />
+
+        <ImageView android:layout_width="match_parent"
+                   android:src="@drawable/design_2"
+                   android:layout_alignParentBottom="true"
+                   android:scaleType="fitXY"
+                   android:adjustViewBounds="true"
+                   android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</layout>

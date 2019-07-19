@@ -1,14 +1,14 @@
 package com.afedaxo.processor
 
-import com.afedaxo.model.room.Dish
+import com.afedaxo.model.room.DishEntity
 import com.afedaxo.util.CombinationMaker
 
-class CompositeWeightProcessor(itemList: List<List<Pair<Int, Dish>>>) :
-    GenericWeightProcessor<List<Pair<Int, Dish>>>(itemList) {
+class CompositeWeightProcessor(itemList: List<List<Pair<Int, DishEntity>>>) :
+    GenericWeightProcessor<List<Pair<Int, DishEntity>>>(itemList) {
 
     private val regex = "[0-9]+[.,]?[0-9]?[0-9]?".toRegex()
 
-    override fun assignWeights(dishes: List<List<Pair<Int, Dish>>>): Map<List<Pair<Int, Dish>>, Double> =
+    override fun assignWeights(dishes: List<List<Pair<Int, DishEntity>>>): Map<List<Pair<Int, DishEntity>>, Double> =
         dishes.map { it to (it.sumByDouble { regex.find(it.second.priceVal)!!.value.toDouble() }) }.toMap()
 
     companion object {
@@ -20,13 +20,13 @@ class CompositeWeightProcessor(itemList: List<List<Pair<Int, Dish>>>) :
             return this.flatMap { first -> other.map { second -> transformer.invoke(first, second) } }
         }
 
-        fun preprocessValues(num: Int, dishes: List<Dish>): List<List<Pair<Int, Dish>>> {
+        fun preprocessValues(num: Int, dishes: List<DishEntity>): List<List<Pair<Int, DishEntity>>> {
             val peopleList= generateSequence(0) { it+1 }
                 .take(num).toList()
 
             val pairList = peopleList.cartesianProduct(dishes)
 
-            val combinationMaker = CombinationMaker<Pair<Int, Dish>>()
+            val combinationMaker = CombinationMaker<Pair<Int, DishEntity>>()
 
             val allCombinations
                     = combinationMaker.makeCombList(
