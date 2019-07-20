@@ -10,3 +10,21 @@ Afedaxo is the app that helps you to choose a dish if you are not sure about the
 
 <a href="https://play.google.com/store/apps/details?id=com.afedaxo" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/></a>
+
+## Screenshots
+
+<div style="display:flex;" >
+<img  src="assets/20190523_160816_framed.png" width="24%" >
+<img style="margin-left:10px;" src="assets/20190523_160846_framed.png" width="24%" >
+<img style="margin-left:10px;" src="assets/20190523_160833_framed.png" width="24%" >
+<img style="margin-left:10px;" src="assets/20190523_160902_framed.png" width="24%" >
+</div>
+
+## Dependencies and development tools
+
+* Kotlin
+* MVVM
+* Koin
+* Android Architecture Components (LiveData, ViewModel, Room, Lifecycle)
+* Android Navigation Component
+* Data Binding
