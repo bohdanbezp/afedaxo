@@ -8,14 +8,16 @@ import android.view.ViewGroup
 import androidx.annotation.UiThread
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afedaxo.R
 import com.afedaxo.databinding.FragmentFoodListBinding
 import com.afedaxo.presentation.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_food_list.*
+import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 open class FoodListFragment : BaseFragment() {
+    var sessionId: Int = 0
     lateinit var binding: FragmentFoodListBinding
 
     val viewModel : FoodListViewModel by viewModel()
@@ -44,7 +46,7 @@ open class FoodListFragment : BaseFragment() {
         })
 
         // Creates a vertical Layout Manager
-        ac_fl_recyclerview.layoutManager = LinearLayoutManager(context)
+        binding.root.ac_fl_recyclerview.layoutManager = LinearLayoutManager(context)
 
         binding.lifecycleOwner = this
 
@@ -53,20 +55,26 @@ open class FoodListFragment : BaseFragment() {
 
     @UiThread
     fun updateWithBitmaps(dishesBitmap: List<Bitmap>) {
-        ac_fl_recyclerview.adapter = DishAdapter(
+        binding.root.ac_fl_recyclerview.adapter = DishAdapter(
             dishesBitmap,
             context!!
         )
-        (ac_fl_recyclerview.adapter as DishAdapter).notifyDataSetChanged()
-        ac_fl_recyclerview.scheduleLayoutAnimation()
+        (binding.root.ac_fl_recyclerview.adapter as DishAdapter).notifyDataSetChanged()
+        binding.root.ac_fl_recyclerview.scheduleLayoutAnimation()
         checkEmpty()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        sessionId = FoodListFragmentArgs.fromBundle(arguments!!).sessionId
     }
 
     @UiThread
     fun checkEmpty() {
-        val adapter = ac_fl_recyclerview.adapter
+        val adapter = binding.root.ac_fl_recyclerview.adapter
         if (adapter != null) {
-            ac_fl_empty_view.visibility = (if (adapter.itemCount == 0) View.VISIBLE else View.GONE)
+            binding.root.ac_fl_empty_view.visibility = (if (adapter.itemCount == 0) View.VISIBLE else View.GONE)
         }
     }
 
@@ -75,12 +83,13 @@ open class FoodListFragment : BaseFragment() {
     }
 
     fun navigateToPhotoTakingActivity() {
-
+        val action = FoodListFragmentDirections.actionFoodListFragmentToPhotoTakingFragment(sessionId)
+        findNavController().navigate(action)
     }
 
     @UiThread
     fun enableProcessButton() {
-        ac_fl_process_btn.visibility = View.VISIBLE
+        binding.root.ac_fl_process_btn.visibility = View.VISIBLE
     }
 
 }

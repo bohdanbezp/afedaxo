@@ -6,11 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.afedaxo.data.repository.FilesRepository
+import com.afedaxo.data.repository.SessionsRepository
+import com.afedaxo.data.room.DishEntity
 import com.afedaxo.domain.usecase.DetectDishPriceUseCase
 import com.afedaxo.helper.SingleLiveEvent
-import com.afedaxo.model.repository.FilesRepository
-import com.afedaxo.model.repository.SessionsRepository
-import com.afedaxo.model.room.DishEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*

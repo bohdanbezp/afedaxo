@@ -1,12 +1,12 @@
 package com.afedaxo.domain.usecase
 
 import android.graphics.Bitmap
+import com.afedaxo.data.repository.FilesRepository
+import com.afedaxo.data.repository.SessionsRepository
 import com.afedaxo.domain.Either
 import com.afedaxo.domain.Failure
 import com.afedaxo.domain.Success
 import com.afedaxo.domain.model.CalculationParams
-import com.afedaxo.model.repository.FilesRepository
-import com.afedaxo.model.repository.SessionsRepository
 import com.afedaxo.processor.CompositeWeightProcessor
 
 class CalcDishForPeopleUseCase(val filesRepository: FilesRepository,

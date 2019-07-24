@@ -3,8 +3,8 @@ package com.afedaxo.presentation.ui.chooseparams
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.afedaxo.data.repository.SessionsRepository
 import com.afedaxo.helper.SingleLiveEvent
-import com.afedaxo.model.repository.SessionsRepository
 import kotlinx.coroutines.launch
 
 class ChooseParamsViewModel(val sessionsRepository: SessionsRepository) : ViewModel() {

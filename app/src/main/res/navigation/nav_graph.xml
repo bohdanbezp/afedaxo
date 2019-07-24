@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/nav_graph">
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph" app:startDestination="@id/startFragment">
 
+    <fragment android:id="@+id/startFragment" android:name="com.afedaxo.presentation.ui.start.StartFragment"
+              android:label="StartFragment"
+        tools:layout="@layout/fragment_start"
+    >
+        <action android:id="@+id/action_startFragment_to_foodListFragment" app:destination="@id/foodListFragment"/>
+    </fragment>
+    <fragment android:id="@+id/foodListFragment" android:name="com.afedaxo.presentation.ui.foodlist.FoodListFragment"
+              android:label="FoodListFragment"
+              tools:layout="@layout/fragment_food_list"
+    >
+        <argument android:name="sessionId" app:argType="integer"/>
+        <action android:id="@+id/action_foodListFragment_to_photoTakingFragment"
+                app:destination="@id/photoTakingFragment"/>
+        <action android:id="@+id/action_foodListFragment_to_chooseParamsFragment"
+                app:destination="@id/chooseParamsFragment"/>
+    </fragment>
+    <fragment android:id="@+id/selectRegionFragment"
+              tools:layout="@layout/fragment_select_region"
+              android:name="com.afedaxo.presentation.ui.selectregion.SelectRegionFragment"
+              android:label="SelectRegionFragment">
+        <argument android:name="sessionId" app:argType="integer"/>
+        <argument android:name="fullFilename" app:argType="string"/>
+    </fragment>
+    <fragment android:id="@+id/photoTakingFragment" android:name="com.afedaxo.presentation.ui.photo.PhotoTakingFragment"
+              android:label="PhotoTakingFragment"
+              tools:layout="@layout/fragment_photo_taking"
+    >
+        <argument android:name="sessionId" app:argType="integer"/>
+        <action android:id="@+id/action_photoTakingFragment_to_selectRegionFragment"
+                app:destination="@id/selectRegionFragment"/>
+    </fragment>
+    <fragment android:id="@+id/chooseParamsFragment"
+              android:name="com.afedaxo.presentation.ui.chooseparams.ChooseParamsFragment"
+              android:label="ChooseParamsFragment"
+              tools:layout="@layout/fragment_choose_params"
+    >
+        <action android:id="@+id/action_chooseParamsFragment_to_resultFragment" app:destination="@id/resultFragment"/>
+    </fragment>
+    <fragment android:id="@+id/resultFragment" android:name="com.afedaxo.presentation.ui.result.ResultFragment"
+              android:label="ResultFragment"
+              tools:layout="@layout/fragment_result"
+    />
 </navigation>

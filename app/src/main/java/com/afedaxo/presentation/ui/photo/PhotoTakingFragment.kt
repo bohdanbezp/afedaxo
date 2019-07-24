@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import com.afedaxo.R
 import com.afedaxo.databinding.FragmentPhotoTakingBinding
 import com.afedaxo.presentation.ui.base.BaseFragment
@@ -21,11 +20,11 @@ import io.fotoapparat.Fotoapparat
 import io.fotoapparat.parameter.ScaleType
 import io.fotoapparat.selector.back
 import io.fotoapparat.view.CameraView
-import kotlinx.android.synthetic.main.fragment_food_list.*
-import kotlinx.android.synthetic.main.fragment_photo_taking.*
+import kotlinx.android.synthetic.main.fragment_photo_taking.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 open class PhotoTakingFragment : BaseFragment() {
+    var sessionId: Int = 0
     lateinit var binding: FragmentPhotoTakingBinding
 
     private lateinit var fotoapparat: Fotoapparat
@@ -40,7 +39,7 @@ open class PhotoTakingFragment : BaseFragment() {
 
         binding.viewModel = viewModel
 
-        ac_pt_snap_btn.setOnClickListener {
+        binding.root.ac_pt_snap_btn.setOnClickListener {
             val photoResult = fotoapparat.takePicture()
 
             YoYo.with(Techniques.FadeOutDown)
@@ -53,13 +52,6 @@ open class PhotoTakingFragment : BaseFragment() {
                 .playOn(binding.root.findViewById<CameraView>(R.id.ac_pt_camera_view))
         }
 
-        // TODO
-        //viewModel.init(intent.extras.getInt(SESSION_ID))
-
-        viewModel.lastDishRetrieved.observe(this, Observer<String> {
-            navigateToSelectRegion(it)
-        })
-
         viewModel.photoProcessed.observe(this, Observer<String> {
             navigateToSelectRegion(it)
         })
@@ -68,19 +60,26 @@ open class PhotoTakingFragment : BaseFragment() {
             context = activity!!,
             lensPosition = back(),
             scaleType = ScaleType.CenterCrop,
-            view = ac_pt_camera_view
+            view = binding.root.ac_pt_camera_view
         )
-
-        // Creates a vertical Layout Manager
-        ac_fl_recyclerview.layoutManager = LinearLayoutManager(context)
 
         binding.lifecycleOwner = this
 
         return binding.root
     }
 
-    private fun navigateToSelectRegion(it: String) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        sessionId = PhotoTakingFragmentArgs.fromBundle(arguments!!).sessionId
+        viewModel.init(sessionId)
+    }
+
+    private fun navigateToSelectRegion(fullFilename: String) {
+        val action = PhotoTakingFragmentDirections.actionPhotoTakingFragmentToSelectRegionFragment(
+            sessionId, fullFilename
+        )
+        findNavController().navigate(action)
     }
 
     override fun onStart() {
@@ -98,7 +97,7 @@ open class PhotoTakingFragment : BaseFragment() {
             Manifest.permission.CAMERA)
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
+            if (shouldShowRequestPermissionRationale(
                     Manifest.permission.CAMERA)) {
                 val builder = AlertDialog.Builder(activity!!)
                 builder.setMessage("Permission to access the camera is required for this app to record audio.")
@@ -117,13 +116,14 @@ open class PhotoTakingFragment : BaseFragment() {
         }
         else {
             fotoapparat.start()
+            binding.root.ac_pt_snap_btn.visibility = View.VISIBLE
         }
     }
 
     private val CAMERA_REQUEST_CODE = 101
 
     private fun makeRequest() {
-        ActivityCompat.requestPermissions(activity!!,
+        requestPermissions(
             arrayOf(Manifest.permission.CAMERA),
             CAMERA_REQUEST_CODE)
     }
@@ -135,6 +135,7 @@ open class PhotoTakingFragment : BaseFragment() {
     ) {
         if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             fotoapparat.start()
+            binding.root.ac_pt_snap_btn.visibility = View.VISIBLE
         }
     }
     

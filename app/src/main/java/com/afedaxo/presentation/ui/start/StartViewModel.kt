@@ -3,15 +3,13 @@ package com.afedaxo.presentation.ui.start
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.afedaxo.domain.usecase.CreateSessionAndSaveUseCase
 import com.afedaxo.helper.SingleLiveEvent
-import com.afedaxo.model.repository.SessionsRepository
-import com.afedaxo.model.room.QuessingSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 
-class StartViewModel(val sessionsRepository: SessionsRepository) : ViewModel() {
+class StartViewModel(val createSessionAndSaveUseCase: CreateSessionAndSaveUseCase) : ViewModel() {
 
     private val _newSessionCreated = SingleLiveEvent<Int>()
 
@@ -20,14 +18,11 @@ class StartViewModel(val sessionsRepository: SessionsRepository) : ViewModel() {
 
     fun onStartProcessClick() {
         viewModelScope.launch(Dispatchers.Main) {
-            sessionsRepository.deleteSession(sessionsRepository.retrieveLastSession())
-            val quessingSession = QuessingSession(Math.abs(Random().nextInt()),
-                System.currentTimeMillis())
-
-            sessionsRepository.insert(quessingSession)
-//            val quessingSession = sessionsRepository.retrieveLastSession()
-//
-            _newSessionCreated.value = quessingSession.sessionId
+            createSessionAndSaveUseCase.invoke(Any(), Dispatchers.Main,
+                {
+                    _newSessionCreated.value = it.sessionId
+                },
+                {})
         }
     }
 }

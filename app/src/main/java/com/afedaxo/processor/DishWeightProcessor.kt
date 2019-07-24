@@ -1,6 +1,6 @@
 package com.afedaxo.processor
 
-import com.afedaxo.model.room.DishEntity
+import com.afedaxo.data.room.DishEntity
 
 class DishWeightProcessor(dishes: List<DishEntity>) : GenericWeightProcessor<DishEntity>(dishes) {
 

@@ -1,9 +1,9 @@
-package com.afedaxo.model.repository
+package com.afedaxo.data.repository
 
-import com.afedaxo.model.room.AppDatabase
-import com.afedaxo.model.room.DishEntity
-import com.afedaxo.model.room.QuessingSession
-import com.afedaxo.model.room.SessionWithFiles
+import com.afedaxo.data.room.AppDatabase
+import com.afedaxo.data.room.DishEntity
+import com.afedaxo.data.room.QuessingSession
+import com.afedaxo.data.room.SessionWithFiles
 
 class SessionsRepository (val appDatabase: AppDatabase, val filesRepository: FilesRepository) {
     suspend fun retrieveLastSession(): QuessingSession? {

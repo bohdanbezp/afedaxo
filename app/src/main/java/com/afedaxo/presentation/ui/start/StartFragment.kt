@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.afedaxo.R
 import com.afedaxo.databinding.FragmentStartBinding
 import com.afedaxo.presentation.ui.base.BaseFragment
@@ -35,6 +36,7 @@ open class StartFragment : BaseFragment() {
     }
 
     fun navigateToFoodList(sessionId: Int) {
-        // TODO
+        val action = StartFragmentDirections.actionStartFragmentToFoodListFragment(sessionId)
+        findNavController().navigate(action)
     }
 }

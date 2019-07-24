@@ -1,4 +1,4 @@
-package com.afedaxo.model.room
+package com.afedaxo.data.room
 
 import androidx.room.*
 

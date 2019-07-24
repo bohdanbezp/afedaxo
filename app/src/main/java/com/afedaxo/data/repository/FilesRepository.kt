@@ -1,4 +1,4 @@
-package com.afedaxo.model.repository
+package com.afedaxo.data.repository
 
 import android.annotation.SuppressLint
 import android.content.Context

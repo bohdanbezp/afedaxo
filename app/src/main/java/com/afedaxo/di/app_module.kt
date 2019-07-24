@@ -1,11 +1,12 @@
 package com.afedaxo.di
 
 import androidx.room.Room
+import com.afedaxo.data.repository.FilesRepository
+import com.afedaxo.data.repository.SessionsRepository
+import com.afedaxo.data.room.AppDatabase
 import com.afedaxo.domain.usecase.CalcDishForPeopleUseCase
+import com.afedaxo.domain.usecase.CreateSessionAndSaveUseCase
 import com.afedaxo.domain.usecase.DetectDishPriceUseCase
-import com.afedaxo.model.repository.FilesRepository
-import com.afedaxo.model.repository.SessionsRepository
-import com.afedaxo.model.room.AppDatabase
 import com.afedaxo.presentation.ui.chooseparams.ChooseParamsViewModel
 import com.afedaxo.presentation.ui.foodlist.FoodListViewModel
 import com.afedaxo.presentation.ui.main.MainViewModel
@@ -50,6 +51,8 @@ val useCaseModule = module {
     factory { CalcDishForPeopleUseCase(get(), get()) }
 
     factory { DetectDishPriceUseCase(get()) }
+
+    factory { CreateSessionAndSaveUseCase(get()) }
 
 }
 

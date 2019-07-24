@@ -1,6 +1,6 @@
 package com.afedaxo
 
-import com.afedaxo.model.room.DishEntity
+import com.afedaxo.data.room.DishEntity
 import com.afedaxo.processor.CompositeWeightProcessor
 import com.afedaxo.processor.DishWeightProcessor
 import org.junit.Test

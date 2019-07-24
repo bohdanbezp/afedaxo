@@ -1,6 +1,6 @@
 package com.afedaxo.processor
 
-import com.afedaxo.model.room.DishEntity
+import com.afedaxo.data.room.DishEntity
 import com.afedaxo.util.CombinationMaker
 
 class CompositeWeightProcessor(itemList: List<List<Pair<Int, DishEntity>>>) :

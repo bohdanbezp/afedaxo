@@ -4,9 +4,9 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.afedaxo.data.repository.FilesRepository
+import com.afedaxo.data.repository.SessionsRepository
 import com.afedaxo.helper.SingleLiveEvent
-import com.afedaxo.model.repository.FilesRepository
-import com.afedaxo.model.repository.SessionsRepository
 
 class FoodListViewModel(val filesRepository: FilesRepository,
                         val sessionsRepository: SessionsRepository) : ViewModel() {
@@ -44,7 +44,7 @@ class FoodListViewModel(val filesRepository: FilesRepository,
     }
 
     fun onAddPhotoClick() {
-        _onProcessClick.call()
+        _onAddPhotoClick.call()
     }
 
 }

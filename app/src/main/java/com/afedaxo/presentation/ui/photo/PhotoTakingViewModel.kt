@@ -9,13 +9,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.afedaxo.BR
+import com.afedaxo.data.repository.FilesRepository
+import com.afedaxo.data.repository.SessionsRepository
+import com.afedaxo.data.room.DishEntity
 import com.afedaxo.helper.SingleLiveEvent
-import com.afedaxo.model.repository.FilesRepository
-import com.afedaxo.model.repository.SessionsRepository
-import com.afedaxo.model.room.DishEntity
 import io.fotoapparat.result.PhotoResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PhotoTakingViewModel(val filesRepository: FilesRepository,
                            val sessionsRepository: SessionsRepository) : ViewModel(), Observable {
@@ -32,11 +33,6 @@ class PhotoTakingViewModel(val filesRepository: FilesRepository,
         }
     }
 
-    private val _lastDishRetrieved = SingleLiveEvent<String>()
-
-    val lastDishRetrieved : LiveData<String>
-        get() = _lastDishRetrieved
-
     private val _photoProcessed = SingleLiveEvent<String>()
 
     val photoProcessed : LiveData<String>
@@ -46,27 +42,35 @@ class PhotoTakingViewModel(val filesRepository: FilesRepository,
 
     var processingState: Boolean = false
 
+    suspend fun getAndProcessBitmap(photoResult: PhotoResult) : Bitmap = withContext(Dispatchers.Default){
+        val bitmapPhoto = photoResult
+            .toBitmap().await()
+
+        val bitm = bitmapPhoto.bitmap
+
+        val matrix = Matrix()
+
+        matrix.postRotate(90f)
+
+        val rotatedBitmap =
+            Bitmap.createBitmap(bitm, 0, 0,
+                bitm.width, bitm.height, matrix, true)
+
+        rotatedBitmap
+    }
+
     fun onPhotoTaken(photoResult: PhotoResult) {
         processingState = true
         onPropertyChangedCallbackList.forEach {
             it.onPropertyChanged(this, BR.progressBarVisibility)
             it.onPropertyChanged(this, BR.photoOverlayVisibility)
         }
-         viewModelScope.launch(Dispatchers.Default) {
-            val bitmapPhoto = photoResult
-                .toBitmap().await()
-
-            val bitm = bitmapPhoto.bitmap
-
-            val matrix = Matrix()
-
-            matrix.postRotate(90f)
-
+         viewModelScope.launch(Dispatchers.Main) {
             val rotatedBitmap =
-                Bitmap.createBitmap(bitm, 0, 0,
-                    bitm.width, bitm.height, matrix, true)
+                getAndProcessBitmap(photoResult)
 
             val filename = filesRepository.saveBitmapToFile(rotatedBitmap)
+             processingState = false
             _photoProcessed.value = filename
         }
 
@@ -80,7 +84,6 @@ class PhotoTakingViewModel(val filesRepository: FilesRepository,
                 onPropertyChangedCallbackList.forEach {
                     it.onPropertyChanged(this@PhotoTakingViewModel, BR.reuseBtnVisibility)
                 }
-                _lastDishRetrieved.value = lastDish!!.fullFilename
             }
         }
     }

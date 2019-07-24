@@ -13,26 +13,30 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.afedaxo.R
+import com.afedaxo.data.room.DishEntity
 import com.afedaxo.databinding.FragmentSelectRegionBinding
-import com.afedaxo.model.room.DishEntity
 import com.afedaxo.presentation.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.dialog_dish_detected.view.*
 import kotlinx.android.synthetic.main.fragment_select_region.*
 import kotlinx.android.synthetic.main.fragment_select_region.view.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.DecimalFormat
 
 class SelectRegionFragment : BaseFragment() {
 
+    private lateinit var fullFilename: String
+    private var sessionId: Int = 0
     lateinit var binding: FragmentSelectRegionBinding
 
     val viewModel : SelectRegionViewModel by viewModel()
 
-    fun navigateToFoodList(dish: DishEntity) {
-
+    fun navigateToFoodList() {
+        findNavController().popBackStack(R.id.foodListFragment, false)
     }
 
     fun initViewWithUri(fromFile: Uri) {
@@ -40,12 +44,12 @@ class SelectRegionFragment : BaseFragment() {
     }
 
     fun showDishNotDetectedToast() {
-        Toast.makeText(activity, getString(R.string.select_with_price), Toast.LENGTH_SHORT)
+        Toast.makeText(activity, getString(R.string.select_with_price), Toast.LENGTH_LONG)
             .show()
     }
 
     fun showRetakePhotoButton() {
-        ac_sr_retake_btn.visibility = View.VISIBLE
+        binding.root.ac_sr_retake_btn.visibility = View.VISIBLE
     }
 
 
@@ -71,19 +75,26 @@ class SelectRegionFragment : BaseFragment() {
             initViewWithUri(it)
         })
 
-//        viewModel.initCropView(
-//            intent.extras.getString(SelectRegionActivity.FULL_FILENAME))
+        return binding.root
+    }
 
-                binding.root.ac_sr_retake_btn.setOnClickListener {
-            //viewModel.onRetakePhoto(intent.extras.getString(SelectRegionActivity.FULL_FILENAME))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        sessionId = SelectRegionFragmentArgs.fromBundle(arguments!!).sessionId
+        fullFilename = SelectRegionFragmentArgs.fromBundle(arguments!!).fullFilename
+
+        viewModel.initCropView(fullFilename)
+        binding.root.ac_sr_retake_btn.setOnClickListener {
+            GlobalScope.launch{
+                viewModel.onRetakePhoto(fullFilename)
+            }
+            findNavController().popBackStack()
         }
 
-                binding.root.ac_sr_select_btn.setOnClickListener {
-            //            viewModel.onSelectRegion(cropImageView.getCroppedImage(),
-//                intent.extras.getString(SelectRegionActivity.FULL_FILENAME), intent.extras.getInt(SESSION_ID))
+        binding.root.ac_sr_select_btn.setOnClickListener {
+            viewModel.onSelectRegion(cropImageView.getCroppedImage(), fullFilename, sessionId)
         }
-
-            return binding.root
     }
 
     @UiThread
@@ -116,6 +127,7 @@ class SelectRegionFragment : BaseFragment() {
             mDialogView.dialog_dishdtc_confirm_btn.setOnClickListener {
                 lifecycleScope.launch(Dispatchers.Main) {
                     viewModel.dishConfirmed(dish)
+                    navigateToFoodList()
                 }
             }
 
@@ -132,9 +144,5 @@ class SelectRegionFragment : BaseFragment() {
             dialog?.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
-    }
-
-    fun onBackPressed() {
-        //startActivity(PhotoTakingActivity.getIntent(this, intent.extras.getInt(SESSION_ID)))
     }
 }

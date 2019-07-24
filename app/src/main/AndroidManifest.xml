@@ -16,34 +16,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.ChooseParamsActivity"
-                  android:theme="@style/MyTheme"
-        />
-        <activity
-                android:theme="@style/MyTheme"
-                android:name=".ui.activity.ResultActivity"
-                android:screenOrientation="portrait"/>
-        <activity
-                android:theme="@style/MyTheme"
-                android:name=".ui.activity.SelectRegionActivity"
-                android:screenOrientation="portrait"/>
-        <activity
-                android:theme="@style/MyTheme"
-                android:name=".ui.activity.PhotoTakingActivity"
-                android:screenOrientation="portrait"/>
-        <activity
-                android:theme="@style/MyTheme"
-                android:name=".ui.activity.FoodListActivity"
-                android:screenOrientation="portrait"/>
 
         <meta-data
                 android:name="com.google.firebase.ml.vision.DEPENDENCIES"
                 android:value="ocr"/>
 
         <activity
-                android:name=".ui.activity.MainActivity"
-                android:screenOrientation="portrait"
-                android:theme="@style/MyTheme">
+                android:name=".presentation.ui.main.MainActivity"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

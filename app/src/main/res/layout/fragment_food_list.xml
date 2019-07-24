@@ -56,7 +56,7 @@
                 android:layout_marginRight="16dp"
                 android:onClick="@{() -> viewModel.onAddPhotoClick()}"
                 app:srcCompat="@android:drawable/ic_input_add"
-                android:tint="@android:color/white"/>
+                app:tint="@android:color/white"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:id="@+id/ac_fl_empty_view"
