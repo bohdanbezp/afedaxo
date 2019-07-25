@@ -10,6 +10,10 @@ abstract class GenericWeightProcessor<T>(val itemList: List<T>) {
         processWeights(itemList)
     }
 
+    private val random: Random by lazy {
+        provideRandom()
+    }
+
     private fun reverseWeights(inpt: Map<T, Double>) = inpt.mapValues { 1.0/it.value }
 
     private fun weightsSum(inpt: Map<T, Double>) = inpt.map { it.value }.sum()
@@ -17,7 +21,6 @@ abstract class GenericWeightProcessor<T>(val itemList: List<T>) {
     private fun convToProb(sum: Double, inpt: Map<T, Double>) = inpt.mapValues { it.value/sum }
 
     fun getWeightedRandom(): T? {
-        val random = provideRandom()
         var result: T? = null
         var bestValue = java.lang.Double.MAX_VALUE
 
@@ -41,8 +44,10 @@ abstract class GenericWeightProcessor<T>(val itemList: List<T>) {
 
     protected abstract fun assignWeights(dishes: List<T>): Map<T, Double>
 
+    fun getProbMap(): Map<T, Double> = convToProb(weightsSum(weights), weights)
+
     override fun toString(): String =
-        convToProb(weightsSum(weights), weights).toString()
+        getProbMap().toString()
 
 
     private fun provideRandom() = Random(GeneralUtils.bytesToLong(GeneralUtils.rand(
