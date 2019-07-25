@@ -3,8 +3,7 @@ package com.afedaxo
 import com.afedaxo.data.room.DishEntity
 import com.afedaxo.processor.CompositeWeightProcessor
 import com.afedaxo.processor.DishWeightProcessor
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Test
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -61,11 +60,11 @@ class GenericWeightProcessorTest {
             val percentageD2 = getValue(dish2)
             val percentageD3 = getValue(dish3)
 
-            assertEquals(roundingFormatter.format(percentageD1),
+            Assert.assertEquals(roundingFormatter.format(percentageD1),
                 roundingFormatter.format(actualPercentageD1))
-            assertEquals (roundingFormatter.format(percentageD2),
+            Assert.assertEquals (roundingFormatter.format(percentageD2),
                 roundingFormatter.format(actualPercentageD2))
-            assertEquals(roundingFormatter.format(percentageD3),
+            Assert.assertEquals(roundingFormatter.format(percentageD3),
                 roundingFormatter.format(actualPercentageD3))
 
         }
@@ -107,11 +106,11 @@ class GenericWeightProcessorTest {
 
             val biggestOf = listOf(percentageD1, percentageD2, percentageD3).max()
 
-            assertTrue(roundingFormatter.format(biggestOf).toDouble() >
+            Assert.assertTrue(roundingFormatter.format(biggestOf).toDouble() >
                 roundingFormatter.format(actualPercentageD1).toDouble())
-            assertTrue (roundingFormatter.format(biggestOf).toDouble() >
+            Assert.assertTrue (roundingFormatter.format(biggestOf).toDouble() >
                 roundingFormatter.format(actualPercentageD2).toDouble())
-            assertTrue(roundingFormatter.format(biggestOf).toDouble() >
+            Assert.assertTrue(roundingFormatter.format(biggestOf).toDouble() >
                 roundingFormatter.format(actualPercentageD3).toDouble())
 
         }
@@ -137,7 +136,7 @@ class GenericWeightProcessorTest {
             d.forEachIndexed { index, element ->
                 val percentage = roundingFormatter.format(getValue(preproc[index]))
                 val actualPercentage = roundingFormatter.format(element.toDouble()/sum.toDouble())
-                assertEquals(actualPercentage, percentage)
+                Assert.assertEquals(actualPercentage, percentage)
             }
 
         }
