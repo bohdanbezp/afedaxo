@@ -98,6 +98,8 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$navigation_version"
 
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
     kapt "com.android.databinding:compiler:3.2.0-alpha10"
 
     androidTestImplementation "androidx.test.ext:junit:1.0.0"
