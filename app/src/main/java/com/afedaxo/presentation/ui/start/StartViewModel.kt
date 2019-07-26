@@ -18,7 +18,7 @@ class StartViewModel(val createSessionAndSaveUseCase: CreateSessionAndSaveUseCas
 
     fun onStartProcessClick() {
         viewModelScope.launch(Dispatchers.Main) {
-            createSessionAndSaveUseCase.invoke(Any(), Dispatchers.Main,
+            createSessionAndSaveUseCase.invoke(Any(),
                 {
                     _newSessionCreated.value = it.sessionId
                 },

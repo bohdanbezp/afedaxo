@@ -11,7 +11,6 @@ import com.afedaxo.data.repository.SessionsRepository
 import com.afedaxo.data.room.DishEntity
 import com.afedaxo.domain.usecase.DetectDishPriceUseCase
 import com.afedaxo.helper.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -42,7 +41,7 @@ class SelectRegionViewModel(val filesRepository: FilesRepository,
     fun onSelectRegion(croppedImage: Bitmap, fullFilename: String,
                        sessionId: Int) {
         viewModelScope.launch {
-            detectDishPriceUseCase.invoke(croppedImage, Dispatchers.Default,
+            detectDishPriceUseCase.invoke(croppedImage,
                 {
                     viewModelScope.launch {
                         val filenameCropped = filesRepository.saveBitmapToFile(croppedImage)

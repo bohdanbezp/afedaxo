@@ -1,7 +1,7 @@
 package com.afedaxo.domain.usecase
 
 import com.afedaxo.domain.Either
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -15,11 +15,11 @@ abstract class UseCase<out Type, in Params> where Type : Any {
      */
     abstract suspend fun run(params: Params): Either<Exception, Type>
 
-    suspend operator fun invoke(params: Params, dispatcher: CoroutineDispatcher,
+    suspend operator fun invoke(params: Params,
                                 onSuccess: (Type) -> Unit, onFailure: (Exception) -> Unit) {
         val result = run(params)
         coroutineScope {
-            launch(dispatcher) {
+            launch(Dispatchers.Main) {
                 result.fold(
                     failed = { onFailure(it) },
                     succeeded = { onSuccess(it) }

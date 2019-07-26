@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.afedaxo.domain.model.CalculationParams
 import com.afedaxo.domain.usecase.CalcDishForPeopleUseCase
 import com.afedaxo.helper.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ResultViewModel(val calcDishForPeopleUseCase: CalcDishForPeopleUseCase) : ViewModel() {
@@ -25,7 +24,7 @@ class ResultViewModel(val calcDishForPeopleUseCase: CalcDishForPeopleUseCase) : 
     fun think(sessionId: Int, priceMode: Int, numPeople: Int) {
         viewModelScope.launch {
            calcDishForPeopleUseCase.invoke(CalculationParams(sessionId, numPeople, priceMode),
-               Dispatchers.Default, {
+               {
                    _resultAvailable.value = it
                },
                {
