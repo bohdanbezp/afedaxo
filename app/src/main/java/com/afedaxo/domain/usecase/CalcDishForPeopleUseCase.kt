@@ -8,6 +8,7 @@ import com.afedaxo.domain.Failure
 import com.afedaxo.domain.Success
 import com.afedaxo.domain.model.CalculationParams
 import com.afedaxo.processor.CompositeWeightProcessor
+import timber.log.Timber
 
 class CalcDishForPeopleUseCase(val filesRepository: FilesRepository,
                                val sessionsRepository: SessionsRepository): UseCase<List<Pair<Int, Bitmap>>, CalculationParams>() {
@@ -15,10 +16,14 @@ class CalcDishForPeopleUseCase(val filesRepository: FilesRepository,
     override suspend fun run(param: CalculationParams): Either<Exception, List<Pair<Int, Bitmap>>> {
         return try {
             val dishes = sessionsRepository.getAllDishesForSessionId(param.sessionId)
+            Timber.d("Got dishes for session %d, size: %d, price mode: %d",
+                param.sessionId, dishes.size, param.priceMode)
 
             val preproc = CompositeWeightProcessor.preprocessValues(param.numPeople, dishes)
 
             val compositeWeightProcessor = CompositeWeightProcessor(preproc)
+
+            Timber.d(compositeWeightProcessor.toString())
 
             if (param.priceMode == 0) {
                 val resultingDish = compositeWeightProcessor.getWeightedRandom()

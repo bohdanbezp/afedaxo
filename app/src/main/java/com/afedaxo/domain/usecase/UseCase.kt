@@ -4,6 +4,7 @@ import com.afedaxo.domain.Either
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /**
  * Base class for a `coroutine` use case.
@@ -21,8 +22,12 @@ abstract class UseCase<out Type, in Params> where Type : Any {
         coroutineScope {
             launch(Dispatchers.Main) {
                 result.fold(
-                    failed = { onFailure(it) },
-                    succeeded = { onSuccess(it) }
+                    failed = {
+                        Timber.d(it)
+                        onFailure(it) },
+                    succeeded = {
+                        Timber.d("Use case success!")
+                        onSuccess(it) }
                 )
             }
         }

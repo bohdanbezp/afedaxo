@@ -35,7 +35,8 @@ class DetectDishPriceUseCase(val context: Context) : UseCase<Dish, Bitmap>() {
 
             textblocklist.forEach { textConcat.append(it.value) }
 
-            val maximumResult = matchedVals.maxBy { it.cornerPoints.get(1).x }
+            val maxVal = matchedVals.maxBy { it.cornerPoints.get(1).x }?.value
+            val maximumResult = maxVal?.let { regex.find(it) }?.groupValues?.get(0)
 
             if (maximumResult != null) {
                 var currencyName: String? = null
@@ -43,30 +44,31 @@ class DetectDishPriceUseCase(val context: Context) : UseCase<Dish, Bitmap>() {
                 if (textConcat.contains("€")
                     || textConcat.contains("EUR [0-9]".toRegex())
                 ) {
-                    currencyName = "EUR "
+                    currencyName = "EUR"
                 } else if (textConcat.contains("$")
                     || textConcat.contains("USD [0-9]".toRegex())
                 ) {
-                    currencyName = "USD "
+                    currencyName = "USD"
                 } else if (textConcat.contains("¥")
                     || textConcat.contains("JPY [0-9]".toRegex())
                 ) {
-                    currencyName = "JPY "
+                    currencyName = "JPY"
                 } else if (textConcat.contains("£")) {
                     currencyName = "£"
                 }
 
                 if (currencyName != null) {
-                    Success(Dish("", BigDecimal(maximumResult.value.replace(',', '.')),
+                    Success(Dish("", BigDecimal(maximumResult.replace(',', '.')),
                         currencyName))
                 } else {
-                    Success(Dish("", BigDecimal(maximumResult.value.replace(',', '.')),
+                    Success(Dish("", BigDecimal(maximumResult.replace(',', '.')),
                         ""))
                 }
 
             }
-
-            Failure(java.lang.Exception("No price found!"))
+            else {
+                Failure(java.lang.Exception("No price found!"))
+            }
         } catch (e: Exception) {
             Failure(e)
         }
