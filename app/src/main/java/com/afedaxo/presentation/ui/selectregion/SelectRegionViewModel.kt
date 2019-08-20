@@ -12,7 +12,6 @@ import com.afedaxo.data.room.DishEntity
 import com.afedaxo.domain.usecase.DetectDishPriceUseCase
 import com.afedaxo.helper.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
@@ -83,13 +82,13 @@ class SelectRegionViewModel(val filesRepository: FilesRepository,
     }
 
     fun disposeDish(dish: DishEntity) {
-        GlobalScope.launch (Dispatchers.IO) {
+        runBlocking (Dispatchers.IO) {
             filesRepository.deleteIfExists(dish.croppedFilename)
         }
     }
 
     fun onRetakePhoto(string: String) {
-        GlobalScope.launch (Dispatchers.IO) {
+        runBlocking (Dispatchers.IO) {
             filesRepository.deleteIfExists(string)
         }
     }

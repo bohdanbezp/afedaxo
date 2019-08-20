@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-open class FoodListFragment : BaseFragment() {
+open class FoodListFragment : BaseFragment(), Observer<List<Bitmap>> {
     private lateinit var dishAdapter: DishAdapter
 
     var sessionId: Int = 0
@@ -33,21 +33,15 @@ open class FoodListFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         Timber.d("onActivityCreated")
 
-        viewModel.onProcessClick.reObserve(this, Observer<Any> {
+        viewModel.onProcessClick.observe(this, Observer<Any> {
             navigateToChooseParamsActivity()
         })
 
-        viewModel.onAddPhotoClick.reObserve(this, Observer<Any> {
+        viewModel.onAddPhotoClick.observe(this, Observer<Any> {
             navigateToPhotoTakingActivity()
         })
 
-        viewModel.dishesBitmaps.reObserve(this, Observer<List<Bitmap>> { bitmaps ->
-            Timber.d("Bitmap updated! " + bitmaps.size)
-            if (bitmaps.size >= 2) {
-                enableProcessButton()
-            }
-            updateWithBitmaps(bitmaps)
-        })
+        viewModel.dishesBitmaps.reObserve(this, this)
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -72,6 +66,14 @@ open class FoodListFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onChanged(bitmaps: List<Bitmap>) {
+        Timber.d("Bitmap updated! " + bitmaps.size)
+        if (bitmaps.size >= 2) {
+            enableProcessButton()
+        }
+        updateWithBitmaps(bitmaps)
+    }
+
     @UiThread
     fun updateWithBitmaps(dishesBitmap: List<Bitmap>) {
         checkEmpty()
@@ -90,10 +92,7 @@ open class FoodListFragment : BaseFragment() {
 
     @UiThread
     fun checkEmpty() {
-        val adapter = binding.root.ac_fl_recyclerview.adapter
-        if (adapter != null) {
-            binding.root.ac_fl_empty_view.visibility = (if (adapter.itemCount == 0) View.VISIBLE else View.GONE)
-        }
+        binding.root.ac_fl_empty_view.visibility = (if (dishAdapter.items.size == 0) View.VISIBLE else View.GONE)
     }
 
     fun navigateToChooseParamsActivity() {
