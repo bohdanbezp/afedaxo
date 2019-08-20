@@ -32,6 +32,9 @@ class CalcDishForPeopleUseCase(val filesRepository: FilesRepository,
                         Pair(it.first, filesRepository.getBitmapOfFile(it.second.croppedFilename))
                     })
                 }
+                else {
+                    Failure(java.lang.Exception("CalcDishForPeopleUseCase error! Res dish null"))
+                }
             } else if (param.priceMode == 1) {
                 val fullyRandom = preproc.random()
                 val weightedRandom = compositeWeightProcessor.getWeightedRandom()
@@ -41,14 +44,15 @@ class CalcDishForPeopleUseCase(val filesRepository: FilesRepository,
                         Pair(it.first, filesRepository.getBitmapOfFile(it.second.croppedFilename))
                     })
                 }
+                else {
+                    Failure(java.lang.Exception("CalcDishForPeopleUseCase error! Res dish null"))
+                }
             } else {
                 val fullyRandom = preproc.random()
                 Success(fullyRandom.map {
                     Pair(it.first, filesRepository.getBitmapOfFile(it.second.croppedFilename))
                 })
             }
-
-            Failure(java.lang.Exception("CalcDishForPeopleUseCase error!"))
         }
         catch (e: java.lang.Exception) {
             Failure(e)

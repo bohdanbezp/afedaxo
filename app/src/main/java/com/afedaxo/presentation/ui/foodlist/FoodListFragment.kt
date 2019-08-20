@@ -9,18 +9,46 @@ import androidx.annotation.UiThread
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afedaxo.R
 import com.afedaxo.databinding.FragmentFoodListBinding
 import com.afedaxo.presentation.ui.base.BaseFragment
+import com.afedaxo.util.reObserve
 import kotlinx.android.synthetic.main.fragment_food_list.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 open class FoodListFragment : BaseFragment() {
+    private lateinit var dishAdapter: DishAdapter
+
     var sessionId: Int = 0
     lateinit var binding: FragmentFoodListBinding
 
     val viewModel : FoodListViewModel by viewModel()
+
+    var mDishesBitmap: List<Bitmap>? = null
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Timber.d("onActivityCreated")
+
+        viewModel.onProcessClick.reObserve(this, Observer<Any> {
+            navigateToChooseParamsActivity()
+        })
+
+        viewModel.onAddPhotoClick.reObserve(this, Observer<Any> {
+            navigateToPhotoTakingActivity()
+        })
+
+        viewModel.dishesBitmaps.reObserve(this, Observer<List<Bitmap>> { bitmaps ->
+            Timber.d("Bitmap updated! " + bitmaps.size)
+            if (bitmaps.size >= 2) {
+                enableProcessButton()
+            }
+            updateWithBitmaps(bitmaps)
+        })
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,23 +58,14 @@ open class FoodListFragment : BaseFragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.onProcessClick.observe(this, Observer<Any> {
-            navigateToChooseParamsActivity()
-        })
-
-        viewModel.onAddPhotoClick.observe(this, Observer<Any> {
-            navigateToPhotoTakingActivity()
-        })
-
-        viewModel.dishesBitmaps.observe(this, Observer<List<Bitmap>> { bitmaps ->
-            if (bitmaps.size >= 2) {
-                enableProcessButton()
-            }
-            updateWithBitmaps(bitmaps)
-        })
+        dishAdapter = DishAdapter(
+                ArrayList(),
+        context!!
+        )
 
         // Creates a vertical Layout Manager
         binding.root.ac_fl_recyclerview.layoutManager = LinearLayoutManager(context)
+        binding.root.ac_fl_recyclerview.adapter = dishAdapter
 
         binding.lifecycleOwner = this
 
@@ -55,13 +74,12 @@ open class FoodListFragment : BaseFragment() {
 
     @UiThread
     fun updateWithBitmaps(dishesBitmap: List<Bitmap>) {
-        binding.root.ac_fl_recyclerview.adapter = DishAdapter(
-            dishesBitmap,
-            context!!
-        )
-        (binding.root.ac_fl_recyclerview.adapter as DishAdapter).notifyDataSetChanged()
-        binding.root.ac_fl_recyclerview.scheduleLayoutAnimation()
         checkEmpty()
+
+        val bitmapDiffUtilCallback = DishBitmapDiffUtilCallback(dishAdapter.items, dishesBitmap)
+        val bitmapDiffResult = DiffUtil.calculateDiff(bitmapDiffUtilCallback)
+        dishAdapter.items = dishesBitmap
+        bitmapDiffResult.dispatchUpdatesTo(dishAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,7 +97,9 @@ open class FoodListFragment : BaseFragment() {
     }
 
     fun navigateToChooseParamsActivity() {
-
+        val action
+                = FoodListFragmentDirections.actionFoodListFragmentToChooseParamsFragment(sessionId)
+        findNavController().navigate(action)
     }
 
     fun navigateToPhotoTakingActivity() {
@@ -92,4 +112,11 @@ open class FoodListFragment : BaseFragment() {
         binding.root.ac_fl_process_btn.visibility = View.VISIBLE
     }
 
+}
+
+class DishBitmapDiffUtilCallback(private val oldList: List<Bitmap>, private val newList: List<Bitmap>): DiffUtil.Callback() {
+    override fun getOldListSize() = oldList.size
+    override fun getNewListSize() = newList.size
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) = oldList[oldItemPosition] == newList[newItemPosition]
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = oldList[oldItemPosition].sameAs(newList[newItemPosition])
 }

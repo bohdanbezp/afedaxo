@@ -12,7 +12,6 @@ import androidx.annotation.UiThread
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.afedaxo.R
 import com.afedaxo.data.room.DishEntity
@@ -21,9 +20,6 @@ import com.afedaxo.presentation.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.dialog_dish_detected.view.*
 import kotlinx.android.synthetic.main.fragment_select_region.*
 import kotlinx.android.synthetic.main.fragment_select_region.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.text.DecimalFormat
 
@@ -86,9 +82,7 @@ class SelectRegionFragment : BaseFragment() {
 
         viewModel.initCropView(fullFilename)
         binding.root.ac_sr_retake_btn.setOnClickListener {
-            GlobalScope.launch{
-                viewModel.onRetakePhoto(fullFilename)
-            }
+            viewModel.onRetakePhoto(fullFilename)
             findNavController().popBackStack()
         }
 
@@ -125,19 +119,17 @@ class SelectRegionFragment : BaseFragment() {
 
             // Set a positive button and its click listener on alert dialog
             mDialogView.dialog_dishdtc_confirm_btn.setOnClickListener {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    viewModel.dishConfirmed(dish)
-                    navigateToFoodList()
-                }
+                viewModel.dishConfirmed(dish)
+                dialog?.dismiss()
+                navigateToFoodList()
+
             }
 
 
             // Display a negative button on alert dialog
             mDialogView.dialog_dishdtc_selectag_btn.setOnClickListener  {
-                lifecycleScope.launch(Dispatchers.Main) {
-                    viewModel.disposeDish(dish);
-                    dialog?.dismiss()
-                }
+                viewModel.disposeDish(dish);
+                dialog?.dismiss()
             }
 
             dialog = builder.show()

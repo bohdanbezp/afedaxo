@@ -40,9 +40,14 @@
               tools:layout="@layout/fragment_choose_params"
     >
         <action android:id="@+id/action_chooseParamsFragment_to_resultFragment" app:destination="@id/resultFragment"/>
+        <argument android:name="sessionId" app:argType="integer"/>
     </fragment>
     <fragment android:id="@+id/resultFragment" android:name="com.afedaxo.presentation.ui.result.ResultFragment"
               android:label="ResultFragment"
               tools:layout="@layout/fragment_result"
-    />
+    >
+        <argument android:name="peopleNum" app:argType="integer"/>
+        <argument android:name="moneyWeightId" app:argType="integer"/>
+        <argument android:name="sessionId" app:argType="integer"/>
+    </fragment>
 </navigation>

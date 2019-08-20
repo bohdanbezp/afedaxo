@@ -1,5 +1,6 @@
 package com.afedaxo.data.repository
 
+import androidx.lifecycle.LiveData
 import com.afedaxo.data.room.AppDatabase
 import com.afedaxo.data.room.DishEntity
 import com.afedaxo.data.room.QuessingSession
@@ -8,6 +9,10 @@ import com.afedaxo.data.room.SessionWithFiles
 class SessionsRepository (val appDatabase: AppDatabase, val filesRepository: FilesRepository) {
     suspend fun retrieveLastSession(): QuessingSession? {
         return appDatabase.quessingSessionDao.getLastSession()
+    }
+
+    fun getAllDishesForLastSessionLiveData() : LiveData<List<DishEntity>> {
+        return appDatabase.quessingSessionDao.getAllDishesForLastSessionLiveData()
     }
 
     suspend fun deleteSession(quessingSession: QuessingSession?) {

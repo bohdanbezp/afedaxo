@@ -10,14 +10,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afedaxo.R
-import com.afedaxo.databinding.FragmentFoodListBinding
+import com.afedaxo.databinding.FragmentResultBinding
 import com.afedaxo.presentation.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_result.*
+import kotlinx.android.synthetic.main.fragment_result.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ResultFragment : BaseFragment() {
 
-    lateinit var binding: FragmentFoodListBinding
+    lateinit var binding: FragmentResultBinding
 
     val viewModel : ResultViewModel by viewModel()
 
@@ -28,11 +28,15 @@ class ResultFragment : BaseFragment() {
         )
 
         // Creates a vertical Layout Manager
-        ac_res_recyclerview.layoutManager = LinearLayoutManager(activity)
+        binding.root.ac_res_recyclerview.layoutManager = LinearLayoutManager(activity)
 
-//        viewModel.think(intent.extras.getInt(FoodListActivity.SESSION_ID),
-//            intent.extras.getInt(ResultActivity.MONEY_WEIGHT_ID), intent.extras.getInt(ResultActivity.PEOPLE_NUM)
-//        )
+        val sessionId = ResultFragmentArgs.fromBundle(arguments!!).sessionId
+        val peopleNum = ResultFragmentArgs.fromBundle(arguments!!).peopleNum
+        val moneyWeightId = ResultFragmentArgs.fromBundle(arguments!!).moneyWeightId
+
+        viewModel.think(sessionId,
+            moneyWeightId, peopleNum
+        )
 
         viewModel.resultAvailable.observe(this, Observer<List<Pair<Int, Bitmap>>> {
             showResult(it)
@@ -43,12 +47,12 @@ class ResultFragment : BaseFragment() {
 
     @UiThread
     fun showResult(dishesImgs: List<Pair<Int, Bitmap>>) {
-        ac_res_recyclerview.adapter = DishResultAdapter(
+        binding.root.ac_res_recyclerview.adapter = DishResultAdapter(
             dishesImgs,
             activity!!
         )
-        (ac_res_recyclerview.adapter as DishResultAdapter).notifyDataSetChanged()
-        ac_res_recyclerview.scheduleLayoutAnimation()
+        (binding.root.ac_res_recyclerview.adapter as DishResultAdapter).notifyDataSetChanged()
+        binding.root.ac_res_recyclerview.scheduleLayoutAnimation()
 
     }
 

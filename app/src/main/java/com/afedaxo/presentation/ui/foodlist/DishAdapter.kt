@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afedaxo.R
 import kotlinx.android.synthetic.main.dish_list_item.view.*
 
-class DishAdapter(val items : List<Bitmap>,
-                  val context: Context) : RecyclerView.Adapter<ViewHolder>() {
+class DishAdapter(
+    var items : List<Bitmap>,
+    val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {

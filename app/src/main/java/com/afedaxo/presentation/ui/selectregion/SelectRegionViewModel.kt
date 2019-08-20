@@ -11,7 +11,11 @@ import com.afedaxo.data.repository.SessionsRepository
 import com.afedaxo.data.room.DishEntity
 import com.afedaxo.domain.usecase.DetectDishPriceUseCase
 import com.afedaxo.helper.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import java.util.*
 
 class SelectRegionViewModel(val filesRepository: FilesRepository,
@@ -60,6 +64,7 @@ class SelectRegionViewModel(val filesRepository: FilesRepository,
                     }
                 },
                 {
+                    Timber.e(it)
                     dishDetectionResult.postValue(
                         DishDetectionResult(
                             DishDetectionResult.Status.FAILURE,
@@ -71,15 +76,21 @@ class SelectRegionViewModel(val filesRepository: FilesRepository,
     }
 
 
-    suspend fun dishConfirmed(dish: DishEntity) {
-        sessionsRepository.insert(dish)
+    fun dishConfirmed(dish: DishEntity) {
+        runBlocking (Dispatchers.IO) {
+            sessionsRepository.insert(dish)
+        }
     }
 
-    suspend fun disposeDish(dish: DishEntity) {
-        filesRepository.deleteIfExists(dish.croppedFilename)
+    fun disposeDish(dish: DishEntity) {
+        GlobalScope.launch (Dispatchers.IO) {
+            filesRepository.deleteIfExists(dish.croppedFilename)
+        }
     }
 
-    suspend fun onRetakePhoto(string: String) {
-        filesRepository.deleteIfExists(string)
+    fun onRetakePhoto(string: String) {
+        GlobalScope.launch (Dispatchers.IO) {
+            filesRepository.deleteIfExists(string)
+        }
     }
 }

@@ -65,6 +65,7 @@
                   android:layout_marginLeft="20dp"
                   android:layout_marginRight="20dp"
                   app:fontFamily="@font/my_custom_font"
+                  android:textColor="#454545"
                   android:text="@string/please_add_at_least_2_dishes"
                   android:layout_centerHorizontal="true"
                   android:layout_centerVertical="true"

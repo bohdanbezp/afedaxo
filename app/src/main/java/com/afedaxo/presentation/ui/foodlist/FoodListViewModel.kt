@@ -1,9 +1,8 @@
 package com.afedaxo.presentation.ui.foodlist
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import com.afedaxo.data.repository.FilesRepository
 import com.afedaxo.data.repository.SessionsRepository
 import com.afedaxo.helper.SingleLiveEvent
@@ -21,23 +20,10 @@ class FoodListViewModel(val filesRepository: FilesRepository,
     val onAddPhotoClick : LiveData<Any>
         get() = _onAddPhotoClick
 
-    val dishesBitmaps: LiveData<List<Bitmap>> = liveData {
-        val data = getDishesBitmaps()
-        data?.let {
-            emit(data as List<Bitmap>)
+    val dishesBitmaps =
+        Transformations.map(sessionsRepository.getAllDishesForLastSessionLiveData()) { dishEntities ->
+            dishEntities.map{filesRepository.getBitmapOfFile(it.croppedFilename)}
         }
-    }
-
-    private suspend fun getDishesBitmaps(): List<Bitmap>? {
-        val dishesBitmaps = sessionsRepository.retrieveLastSession()?.sessionId?.let {
-            sessionsRepository.getAllDishesForSessionId(it).map {
-                filesRepository.getBitmapOfFile(
-                    it.croppedFilename)
-            }
-        }
-
-        return dishesBitmaps
-    }
 
     fun onProcessClick() {
         _onProcessClick.call()

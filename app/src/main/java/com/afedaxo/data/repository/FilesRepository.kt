@@ -23,7 +23,7 @@ class FilesRepository (val context: Context) {
         return BitmapFactory.decodeFile(file.absolutePath, options)
     }
 
-    suspend fun saveBitmapToFile(bitmap: Bitmap): String = withContext(Dispatchers.IO){
+    suspend fun saveBitmapToFile(bitmap: Bitmap): String = withContext(Dispatchers.IO) {
         val filename = generateFilename()
         val saveFile = getOutputJPEGFile(filename)
         val fileOutputStream = FileOutputStream(saveFile);

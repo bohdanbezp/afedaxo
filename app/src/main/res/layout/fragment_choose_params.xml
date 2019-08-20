@@ -82,6 +82,7 @@
                     app:buttonTint="@color/colorPrimary"
                     android:layout_height="wrap_content"
                     android:text="@string/much"
+                    android:textColor="#454545"
                     android:checked="true"/>
 
             <androidx.appcompat.widget.AppCompatRadioButton
@@ -89,6 +90,7 @@
                     android:layout_width="0dp"
                     app:buttonTint="@color/colorPrimary"
                     android:layout_weight="1"
+                    android:textColor="#454545"
                     android:includeFontPadding="false"
                     app:fontFamily="@font/my_custom_font"
                     android:layout_height="wrap_content"
@@ -99,6 +101,7 @@
                     android:layout_width="0dp"
                     app:buttonTint="@color/colorPrimary"
                     android:layout_weight="1"
+                    android:textColor="#454545"
                     android:includeFontPadding="false"
                     app:fontFamily="@font/my_custom_font"
                     android:layout_height="wrap_content"

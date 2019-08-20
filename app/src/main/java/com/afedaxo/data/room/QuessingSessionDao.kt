@@ -1,5 +1,6 @@
 package com.afedaxo.data.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 
@@ -11,6 +12,9 @@ interface QuessingSessionDao {
 
     @Query("SELECT * FROM DishEntity WHERE sessionId = :sessionId")
     suspend fun getAllDishesById(sessionId: Int): List<DishEntity>
+
+    @Query("SELECT * FROM DishEntity WHERE sessionId = (SELECT sessionId FROM QuessingSession ORDER BY session_timestamp desc LIMIT 1)")
+    fun getAllDishesForLastSessionLiveData(): LiveData<List<DishEntity>>
 
     @Query("SELECT * FROM QuessingSession ORDER BY session_timestamp desc LIMIT 1")
     suspend fun getLastSession(): QuessingSession
